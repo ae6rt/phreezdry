@@ -1,0 +1,37 @@
+=== How to promote a build:
+
+Create a new tag that names the release.  E.g.
+
+$ svn copy https://api.taglets.org/svn/phreezdry/trunk https://api.taglets.org/svn/phreezdry/tags/release-1.0 -m"tag release 1.0" 
+
+Check out a copy of that tag and do a promoted build on it:
+
+$ sh scripts/promote.sh
+
+which puts the SVN revision and build date into
+src/main/resources/build.properties, which can then be queried in
+a running server using 
+
+$ scripts/buildInfo.sh
+
+Then deploy to Joyent phreezdry.com:
+
+Monitor the jetty runtime log at /var/logs/jetty.log
+
+- stop jetty using 'sh /var/jetty/stopJetty.sh'
+- remove work directory using 'rm -rf /var/jetty/current/work/*'
+- copy war file into /var/jetty/current/webapps/
+- start jetty using 'sh /var/jetty/startJetty.sh'
+- do a test operation using 'sh scripts/createDocument.sh', which should produce
+
+	- 201 Created
+	- 200 OK:  original and retrieved documents match
+
+
+===============================
+
+=== How to remotely tail the Joyent runtime and request logs 
+
+$ sh scripts/tailJettyLog.sh
+
+$ sh scripts/tailRequests.sh
