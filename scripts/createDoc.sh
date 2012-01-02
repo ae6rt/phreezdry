@@ -15,7 +15,7 @@ rm -f $headerFile
 
 echo "host: $host, context: $context"
 
-curl -D $headerFile -s --user mark@petrovic.org:whatisthis -X PUT -d "document=$document" http://${host}${context}/services/dry
+curl -D $headerFile -s --user mark@petrovic.org:foo -X PUT -d "document=$document" http://${host}${context}/services/dry
 
 created=$(grep ^HTTP $headerFile| awk '{print $2}')
 if [ "$created" != "201" ]; then
